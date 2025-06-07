@@ -179,9 +179,10 @@ export function PaymentHistory() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Payment History</h1>
           <p className="text-muted-foreground">View and manage your rent payment history</p>
         </div>
-        <Button onClick={exportHistory} variant="outline" className="w-full sm:w-auto">
+        <Button onClick={exportHistory} variant="outline" className="w-full sm:w-auto h-11 sm:h-10">
           <Download className="mr-2 h-4 w-4" />
-          Export History
+          <span className="hidden sm:inline">Export History</span>
+          <span className="sm:hidden">Export</span>
         </Button>
       </div>
 
@@ -350,24 +351,26 @@ export function PaymentHistory() {
 
                   {/* Actions */}
                   {payment.status === "paid" && (
-                    <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t">
+                    <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
                       <Button
                         variant="outline"
-                        size="sm"
+                        size="default"
                         onClick={() => downloadReceipt(payment)}
-                        className="flex-1 sm:flex-none"
+                        className="flex-1 sm:flex-none h-11 sm:h-10"
                       >
                         <Download className="mr-2 h-4 w-4" />
-                        Download Receipt
+                        <span className="hidden sm:inline">Download Receipt</span>
+                        <span className="sm:hidden">Download</span>
                       </Button>
                       <Button
                         variant="outline"
-                        size="sm"
+                        size="default"
                         onClick={() => console.log("View details for:", payment.id)}
-                        className="flex-1 sm:flex-none"
+                        className="flex-1 sm:flex-none h-11 sm:h-10"
                       >
                         <Eye className="mr-2 h-4 w-4" />
-                        View Details
+                        <span className="hidden sm:inline">View Details</span>
+                        <span className="sm:hidden">Details</span>
                       </Button>
                     </div>
                   )}

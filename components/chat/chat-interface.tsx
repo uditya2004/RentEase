@@ -3,10 +3,8 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Send, AlertTriangle, MessageSquare } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
@@ -55,33 +53,19 @@ const mockMessages: Message[] = [
   },
 ]
 
-const mockChatUsers: ChatUser[] = [
-  {
-    id: "1",
-    name: "John Landlord",
-    role: "landlord",
-    avatar: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/38184074.jpg-M4vCjTSSWVw5RwWvvmrxXBcNVU8MBU.jpeg",
-    lastSeen: new Date(Date.now() - 10 * 60 * 1000),
-  },
-  {
-    id: "2",
-    name: "Sarah Tenant",
-    role: "tenant",
-    avatar:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/375238645_11475210.jpg-lU8bOe6TLt5Rv51hgjg8NT8PsDBmvN.jpeg",
-    lastSeen: new Date(Date.now() - 5 * 60 * 1000),
-  },
-]
+const mockChatUser: ChatUser = {
+  id: "1",
+  name: "John Landlord",
+  role: "landlord",
+  avatar: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/38184074.jpg-M4vCjTSSWVw5RwWvvmrxXBcNVU8MBU.jpeg",
+  lastSeen: new Date(Date.now() - 10 * 60 * 1000),
+}
 
 export function ChatInterface() {
   const { user } = useAuth()
   const [messages, setMessages] = useState<Message[]>(mockMessages)
   const [newMessage, setNewMessage] = useState("")
-  const [selectedUser, setSelectedUser] = useState<ChatUser | null>(
-    user?.role === "landlord"
-      ? mockChatUsers.find((u) => u.role === "tenant") || null
-      : mockChatUsers.find((u) => u.role === "landlord") || null,
-  )
+  const [selectedUser] = useState<ChatUser | null>(mockChatUser)
   const [messageType, setMessageType] = useState<"message" | "discrepancy">("message")
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -134,136 +118,109 @@ export function ChatInterface() {
   if (!user) return null
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Messages</h1>
+    <div className="flex flex-col h-screen bg-background">
+      {/* Chat Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 border-b bg-background">
+        <div className="flex items-center space-x-3">
+          <MessageSquare className="h-5 w-5" />
+          <span className="text-base sm:text-lg font-semibold truncate">
+            {selectedUser ? `Chat with ${selectedUser.name}` : "Select a conversation"}
+          </span>
+        </div>
+        {selectedUser && (
+          <Badge variant="outline" className="self-start sm:self-center">
+            {selectedUser.lastSeen && formatLastSeen(selectedUser.lastSeen)}
+          </Badge>
+        )}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Chat List - Only show for landlords */}
-        {user.role === "landlord" && (
-          <Card className="lg:col-span-1">
-            <CardHeader>
-              <CardTitle>Tenants</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {mockChatUsers
-                  .filter((u) => u.role === "tenant")
-                  .map((chatUser) => (
-                    <div
-                      key={chatUser.id}
-                      className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${
-                        selectedUser?.id === chatUser.id ? "bg-primary/10 border border-primary/20" : "hover:bg-muted"
-                      }`}
-                      onClick={() => setSelectedUser(chatUser)}
-                    >
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src={chatUser.avatar || "/placeholder.svg"} alt={chatUser.name} />
-                        <AvatarFallback>{chatUser.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{chatUser.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {chatUser.lastSeen && formatLastSeen(chatUser.lastSeen)}
-                        </p>
-                      </div>
+      {/* Messages Area */}
+      <div className="flex-1 overflow-hidden">
+        {selectedUser ? (
+          <div className="h-full flex flex-col">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto space-y-4 p-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.senderId === user.id ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[280px] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 rounded-lg ${
+                      message.senderId === user.id ? "bg-primary text-primary-foreground" : "bg-muted"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2 mb-1">
+                      {message.type === "discrepancy" && <AlertTriangle className="h-3 w-3 text-yellow-500" />}
+                      <span className="text-xs opacity-70">{message.senderName}</span>
                     </div>
-                  ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Chat Interface */}
-        <Card className={user.role === "landlord" ? "lg:col-span-2" : "lg:col-span-3"}>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <MessageSquare className="h-5 w-5" />
-                <span>{selectedUser ? `Chat with ${selectedUser.name}` : "Select a conversation"}</span>
-              </div>
-              {selectedUser && (
-                <Badge variant="outline">{selectedUser.lastSeen && formatLastSeen(selectedUser.lastSeen)}</Badge>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {selectedUser ? (
-              <div className="space-y-4">
-                {/* Messages */}
-                <div className="h-96 overflow-y-auto space-y-4 p-4 border rounded-lg">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`flex ${message.senderId === user.id ? "justify-end" : "justify-start"}`}
-                    >
-                      <div
-                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                          message.senderId === user.id ? "bg-primary text-primary-foreground" : "bg-muted"
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2 mb-1">
-                          {message.type === "discrepancy" && <AlertTriangle className="h-3 w-3 text-yellow-500" />}
-                          <span className="text-xs opacity-70">{message.senderName}</span>
-                        </div>
-                        <p className="text-sm">{message.content}</p>
-                        <p className="text-xs opacity-70 mt-1">{formatTime(message.timestamp)}</p>
-                      </div>
-                    </div>
-                  ))}
-                  <div ref={messagesEndRef} />
-                </div>
-
-                {/* Message Input */}
-                <div className="space-y-2">
-                  {user.role === "tenant" && (
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        variant={messageType === "message" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setMessageType("message")}
-                      >
-                        Message
-                      </Button>
-                      <Button
-                        variant={messageType === "discrepancy" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setMessageType("discrepancy")}
-                      >
-                        <AlertTriangle className="mr-1 h-3 w-3" />
-                        Report Issue
-                      </Button>
-                    </div>
-                  )}
-
-                  <div className="flex space-x-2">
-                    <Input
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder={
-                        messageType === "discrepancy" ? "Describe the rent discrepancy..." : "Type your message..."
-                      }
-                      className="flex-1"
-                    />
-                    <Button onClick={sendMessage} disabled={!newMessage.trim()}>
-                      <Send className="h-4 w-4" />
-                    </Button>
+                    <p className="text-sm">{message.content}</p>
+                    <p className="text-xs opacity-70 mt-1">{formatTime(message.timestamp)}</p>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="h-96 flex items-center justify-center text-muted-foreground">
-                <div className="text-center">
-                  <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>Select a conversation to start messaging</p>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+        ) : (
+          <div className="h-full flex items-center justify-center text-muted-foreground">
+            <div className="text-center px-4">
+              <MessageSquare className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 opacity-50" />
+              <p className="text-sm sm:text-base">Select a conversation to start messaging</p>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Input Area - Fixed at bottom */}
+      {selectedUser && (
+        <div className="border-t bg-background p-4 sm:p-4 space-y-4 sm:space-y-3">
+          {/* Message Type Buttons */}
+          {user.role === "tenant" && (
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
+              <Button
+                variant={messageType === "message" ? "default" : "outline"}
+                size="default"
+                onClick={() => setMessageType("message")}
+                className="flex-1 sm:flex-initial h-12 sm:h-10 text-base sm:text-sm font-medium"
+              >
+                Message
+              </Button>
+              <Button
+                variant={messageType === "discrepancy" ? "default" : "outline"}
+                size="default"
+                onClick={() => setMessageType("discrepancy")}
+                className="flex-1 sm:flex-initial h-12 sm:h-10 text-base sm:text-sm font-medium"
+              >
+                <AlertTriangle className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Report Issue</span>
+                <span className="sm:hidden">Report</span>
+              </Button>
+            </div>
+          )}
+
+          {/* Message Input */}
+          <div className="flex gap-3 sm:gap-2">
+            <Input
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={
+                messageType === "discrepancy" ? "Describe the rent discrepancy..." : "Type your message..."
+              }
+              className="flex-1 h-12 sm:h-10 text-base sm:text-sm px-4 sm:px-3"
+            />
+            <Button 
+              onClick={sendMessage} 
+              disabled={!newMessage.trim()}
+              className="h-12 sm:h-10 px-4 sm:px-3 min-w-[48px] sm:min-w-[40px]"
+            >
+              <Send className="h-5 w-5 sm:h-4 sm:w-4" />
+              <span className="sr-only">Send message</span>
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
-  )
-}
+    )
+  }

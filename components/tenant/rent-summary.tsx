@@ -81,15 +81,25 @@ export function RentSummary() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Rent Summary</h1>
-        <div className="flex gap-2">
-          <Button variant={activeTab === "current" ? "default" : "outline"} onClick={() => setActiveTab("current")}>
-            Current Month
+    <div className="space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Rent Summary</h1>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button 
+            variant={activeTab === "current" ? "default" : "outline"} 
+            onClick={() => setActiveTab("current")}
+            className="flex-1 sm:flex-initial"
+          >
+            <span className="sm:hidden">Current</span>
+            <span className="hidden sm:inline">Current Month</span>
           </Button>
-          <Button variant={activeTab === "history" ? "default" : "outline"} onClick={() => setActiveTab("history")}>
-            Payment History
+          <Button 
+            variant={activeTab === "history" ? "default" : "outline"} 
+            onClick={() => setActiveTab("history")}
+            className="flex-1 sm:flex-initial"
+          >
+            <span className="sm:hidden">History</span>
+            <span className="hidden sm:inline">Payment History</span>
           </Button>
         </div>
       </div>
@@ -112,22 +122,22 @@ export function RentSummary() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-muted-foreground">Total Amount</p>
-                      <p className="text-2xl font-bold">${mockRentData.totalAmount.toFixed(2)}</p>
+                      <p className="text-xl sm:text-2xl font-bold">${mockRentData.totalAmount.toFixed(2)}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Due Date</p>
-                      <p className="text-lg font-semibold">{new Date(mockRentData.dueDate).toLocaleDateString()}</p>
+                      <p className="text-base sm:text-lg font-semibold">{new Date(mockRentData.dueDate).toLocaleDateString()}</p>
                     </div>
                   </div>
 
                   {mockRentData.dueAmount > 0 && (
                     <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                       <div className="flex items-center">
-                        <AlertCircle className="h-5 w-5 text-yellow-600 mr-2" />
-                        <span className="font-medium text-yellow-800 dark:text-yellow-200">
+                        <AlertCircle className="h-5 w-5 text-yellow-600 mr-2 flex-shrink-0" />
+                        <span className="font-medium text-yellow-800 dark:text-yellow-200 text-sm sm:text-base">
                           Outstanding Amount: ${mockRentData.dueAmount.toFixed(2)}
                         </span>
                       </div>
@@ -189,9 +199,10 @@ export function RentSummary() {
                   </div>
 
                   <div className="pt-4">
-                    <Button onClick={downloadInvoice} className="w-full">
+                    <Button onClick={downloadInvoice} className="w-full" size="default">
                       <Download className="mr-2 h-4 w-4" />
-                      Download Invoice
+                      <span className="hidden sm:inline">Download Invoice</span>
+                      <span className="sm:hidden">Download</span>
                     </Button>
                   </div>
                 </div>
@@ -223,7 +234,7 @@ export function RentSummary() {
             <CardContent>
               <div className="space-y-4">
                 {paymentHistory.map((payment, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg gap-3">
                     <div className="flex items-center space-x-4">
                       {getStatusIcon(payment.status)}
                       <div>
@@ -233,7 +244,7 @@ export function RentSummary() {
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="flex sm:flex-col sm:text-right items-center sm:items-end justify-between sm:justify-start gap-2">
                       <p className="font-semibold">${payment.amount.toFixed(2)}</p>
                       <Badge className={getStatusColor(payment.status)}>{payment.status}</Badge>
                     </div>

@@ -102,14 +102,14 @@ function SidebarContent({ onItemClick }: { onItemClick?: () => void }) {
 
   return (
     <div className="flex h-full flex-col bg-background">
-      <div className="flex h-14 items-center border-b px-4 lg:px-6">
-        <Link className="flex items-center gap-2 font-semibold" href="/" onClick={onItemClick}>
-          <Building2 className="h-6 w-6 text-primary" />
-          <span className="text-lg">RentEase</span>
+      <div className="flex h-16 sm:h-14 items-center border-b px-4 lg:px-6">
+        <Link className="flex items-center gap-2 font-semibold min-h-[48px] sm:min-h-[40px] w-full" href="/" onClick={onItemClick}>
+          <Building2 className="h-7 w-7 sm:h-6 sm:w-6 text-primary flex-shrink-0" />
+          <span className="text-xl sm:text-lg font-bold">RentEase</span>
         </Link>
       </div>
       <div className="flex-1 overflow-auto">
-        <nav className="grid items-start px-2 py-4 text-sm font-medium lg:px-4">
+        <nav className="grid items-start px-3 py-4 text-sm font-medium lg:px-4 gap-1">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
@@ -119,14 +119,14 @@ function SidebarContent({ onItemClick }: { onItemClick?: () => void }) {
                 href={item.href}
                 onClick={onItemClick}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                  "flex items-center gap-3 rounded-lg px-4 py-3 transition-all hover:text-primary text-base sm:text-sm font-medium sm:font-medium min-h-[48px] sm:min-h-[40px]",
                   isActive
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted",
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
-                <Icon className="h-4 w-4" />
-                {item.title}
+                <Icon className="h-5 w-5 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="truncate">{item.title}</span>
               </Link>
             )
           })}
@@ -146,7 +146,7 @@ export function Sidebar() {
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={(open) => !open && close()}>
-        <SheetContent side="left" className="p-0 w-64">
+        <SheetContent side="left" className="p-0 w-72 sm:w-64">
           <VisuallyHidden>
             <SheetTitle>Navigation Menu</SheetTitle>
           </VisuallyHidden>
