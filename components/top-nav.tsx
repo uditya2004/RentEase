@@ -1,10 +1,10 @@
 "use client"
 
-import { ThemeToggle } from "./theme-toggle"
-import { Notifications } from "./notifications"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useAuth } from "@/contexts/auth-context"
+import { Bell, Search, User, ChevronRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,22 +13,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ChevronRight } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { useAuth } from "@/contexts/auth-context"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
 import React from "react"
 
 export function TopNav() {
+  const { user, logout } = useAuth()
   const pathname = usePathname()
   const pathSegments = pathname.split("/").filter(Boolean)
-  const { user, logout } = useAuth()
 
   if (!user) return null
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
+    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-14 items-center justify-between px-4 lg:px-6">
         {/* Breadcrumb - Hidden on mobile */}
         <div className="hidden sm:block">
           <nav className="flex items-center space-x-1 text-sm">
@@ -58,11 +58,24 @@ export function TopNav() {
 
         {/* Right side actions */}
         <div className="flex items-center gap-2 sm:gap-4">
+          <div className="hidden md:block">
+            <div className="relative max-w-md">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input type="search" placeholder="Search..." className="pl-8 w-[200px] lg:w-[300px]" />
+            </div>
+          </div>
+
           <Badge variant="outline" className="capitalize hidden sm:inline-flex">
             {user.role}
           </Badge>
-          <Notifications />
+
           <ThemeToggle />
+
+          <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+            <Bell className="h-4 w-4" />
+            <span className="sr-only">Notifications</span>
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -86,12 +99,15 @@ export function TopNav() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href="/settings">Profile</Link>
+                <Link href="/settings">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/settings">Settings</Link>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={logout}>
+                <span>Log out</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

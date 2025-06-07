@@ -53,16 +53,18 @@ export function TenantDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Tenant Dashboard</h1>
-        <div className="text-sm text-muted-foreground">Welcome back! Here's your rent summary.</div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Tenant Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-1">Welcome back! Here's your rent summary.</p>
+        </div>
       </div>
 
       {/* Current Rent Status */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Current Month Rent - {currentRent.month}</span>
+          <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span className="text-lg sm:text-xl">Current Month Rent - {currentRent.month}</span>
             <Badge className={getStatusColor(currentRent.status)}>
               {currentRent.status === "pending" && <Clock className="mr-1 h-3 w-3" />}
               <span className="capitalize">{currentRent.status}</span>
@@ -70,16 +72,16 @@ export function TenantDashboard() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <p className="text-sm text-muted-foreground">Total Amount</p>
-              <p className="text-2xl font-bold">${currentRent.totalAmount.toFixed(2)}</p>
+              <p className="text-xl sm:text-2xl font-bold">${currentRent.totalAmount.toFixed(2)}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Due Amount</p>
-              <p className="text-2xl font-bold text-red-600">${currentRent.dueAmount.toFixed(2)}</p>
+              <p className="text-xl sm:text-2xl font-bold text-red-600">${currentRent.dueAmount.toFixed(2)}</p>
             </div>
-            <div>
+            <div className="sm:col-span-2 lg:col-span-1">
               <p className="text-sm text-muted-foreground">Due Date</p>
               <p className="text-lg font-semibold">{new Date(currentRent.dueDate).toLocaleDateString()}</p>
             </div>
@@ -88,8 +90,8 @@ export function TenantDashboard() {
           {currentRent.dueAmount > 0 && (
             <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
               <div className="flex items-center">
-                <AlertCircle className="h-5 w-5 text-yellow-600 mr-2" />
-                <span className="font-medium text-yellow-800 dark:text-yellow-200">
+                <AlertCircle className="h-5 w-5 text-yellow-600 mr-2 flex-shrink-0" />
+                <span className="font-medium text-yellow-800 dark:text-yellow-200 text-sm">
                   Payment due in{" "}
                   {Math.ceil((new Date(currentRent.dueDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}{" "}
                   days
@@ -109,8 +111,8 @@ export function TenantDashboard() {
           <CardContent>
             <div className="grid gap-3">
               {quickActions.map((action, index) => (
-                <Button key={index} variant="outline" className="justify-start h-auto p-4">
-                  <action.icon className="mr-3 h-5 w-5" />
+                <Button key={index} variant="outline" className="justify-start h-auto p-4 text-left">
+                  <action.icon className="mr-3 h-5 w-5 flex-shrink-0" />
                   <span>{action.title}</span>
                 </Button>
               ))}
@@ -127,10 +129,10 @@ export function TenantDashboard() {
             <div className="space-y-4">
               {notifications.map((notification, index) => (
                 <div key={index} className="flex items-start space-x-3">
-                  {getNotificationIcon(notification.type)}
-                  <div className="flex-1">
+                  <div className="flex-shrink-0 mt-0.5">{getNotificationIcon(notification.type)}</div>
+                  <div className="flex-1 min-w-0">
                     <p className="text-sm">{notification.message}</p>
-                    <p className="text-xs text-muted-foreground">{notification.time}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
                   </div>
                 </div>
               ))}
