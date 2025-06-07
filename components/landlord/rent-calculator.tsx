@@ -18,13 +18,7 @@ interface RentComponent {
   description: string
 }
 
-interface RentCalculation {
-  tenantId: string
-  tenantName: string
-  components: RentComponent[]
-  totalAmount: number
-  dueDate: string
-}
+
 
 const defaultComponents: RentComponent[] = [
   {
@@ -55,7 +49,7 @@ export function RentCalculator() {
   const [components, setComponents] = useState<RentComponent[]>(defaultComponents)
   const [newComponent, setNewComponent] = useState({
     name: "",
-    type: "fixed" as const,
+    type: "fixed" as "fixed" | "variable" | "calculated",
     amount: 0,
     formula: "",
     description: "",
@@ -108,7 +102,7 @@ export function RentCalculator() {
         }
 
         return component.amount || 0
-      } catch (error) {
+      } catch {
         return 0
       }
     }
@@ -269,7 +263,7 @@ export function RentCalculator() {
                     <Label htmlFor="component-type">Type</Label>
                     <Select
                       value={newComponent.type}
-                      onValueChange={(value: any) => setNewComponent({ ...newComponent, type: value })}
+                      onValueChange={(value) => setNewComponent({ ...newComponent, type: value as "fixed" | "variable" | "calculated" })}
                     >
                       <SelectTrigger>
                         <SelectValue />

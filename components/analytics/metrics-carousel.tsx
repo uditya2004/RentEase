@@ -66,28 +66,29 @@ export function MetricsCarousel() {
   }
 
   useEffect(() => {
-    if (carouselRef.current) {
+    const currentCarousel = carouselRef.current
+    if (currentCarousel) {
       const transitionEndHandler = () => {
         setIsAnimating(false)
         if (currentIndex === metrics.length - 1) {
-          carouselRef.current!.style.transition = "none"
+          currentCarousel.style.transition = "none"
           setCurrentIndex(0)
           setTimeout(() => {
-            carouselRef.current!.style.transition = "transform 0.3s ease-in-out"
+            currentCarousel.style.transition = "transform 0.3s ease-in-out"
           }, 50)
         } else if (currentIndex === 0) {
-          carouselRef.current!.style.transition = "none"
+          currentCarousel.style.transition = "none"
           setCurrentIndex(metrics.length - 1)
           setTimeout(() => {
-            carouselRef.current!.style.transition = "transform 0.3s ease-in-out"
+            currentCarousel.style.transition = "transform 0.3s ease-in-out"
           }, 50)
         }
       }
 
-      carouselRef.current.addEventListener("transitionend", transitionEndHandler)
+      currentCarousel.addEventListener("transitionend", transitionEndHandler)
 
       return () => {
-        carouselRef.current?.removeEventListener("transitionend", transitionEndHandler)
+        currentCarousel.removeEventListener("transitionend", transitionEndHandler)
       }
     }
   }, [currentIndex])

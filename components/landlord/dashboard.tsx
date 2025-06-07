@@ -49,7 +49,7 @@ export function LandlordDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Landlord Dashboard</h1>
-        <div className="text-sm text-muted-foreground">Welcome back! Here's what's happening with your properties.</div>
+        <div className="text-sm text-muted-foreground">Welcome back! Here&apos;s what&apos;s happening with your properties.</div>
       </div>
 
       {/* Stats Cards */}

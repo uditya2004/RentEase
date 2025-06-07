@@ -226,7 +226,7 @@ export default function SettingsPage() {
                     <Shield className="h-5 w-5" />
                     Security Settings
                   </CardTitle>
-                  <CardDescription>Manage your account's security settings</CardDescription>
+                  <CardDescription>Manage your account&apos;s security settings</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid gap-4">
@@ -449,7 +449,7 @@ export default function SettingsPage() {
                           <p className="text-sm text-muted-foreground">{item.description}</p>
                         </div>
                         <Switch
-                          checked={userSettings.notifications[item.key]}
+                          checked={userSettings.notifications[item.key as keyof typeof userSettings.notifications] as boolean}
                           onCheckedChange={(checked) =>
                             setUserSettings({
                               ...userSettings,
@@ -482,7 +482,7 @@ export default function SettingsPage() {
                           <p className="text-sm text-muted-foreground">{item.description}</p>
                         </div>
                         <Switch
-                          checked={userSettings.notifications[item.key]}
+                          checked={userSettings.notifications[item.key as keyof typeof userSettings.notifications] as boolean}
                           onCheckedChange={(checked) =>
                             setUserSettings({
                               ...userSettings,

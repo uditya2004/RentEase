@@ -114,7 +114,7 @@ export function PaymentHistory() {
   const [searchQuery, setSearchQuery] = useState("")
   const [filterYear, setFilterYear] = useState<string>("all")
   const [filterStatus, setFilterStatus] = useState<string>("all")
-  const [selectedPayment, setSelectedPayment] = useState<PaymentRecord | null>(null)
+
 
   const filteredPayments = payments.filter((payment) => {
     const matchesSearch =
@@ -363,7 +363,7 @@ export function PaymentHistory() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setSelectedPayment(payment)}
+                        onClick={() => console.log("View details for:", payment.id)}
                         className="flex-1 sm:flex-none"
                       >
                         <Eye className="mr-2 h-4 w-4" />

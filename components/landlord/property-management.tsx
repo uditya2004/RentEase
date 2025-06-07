@@ -81,7 +81,7 @@ export function PropertyManagement() {
   const [newProperty, setNewProperty] = useState({
     name: "",
     address: "",
-    type: "apartment" as const,
+    type: "apartment" as "apartment" | "house" | "commercial",
     totalUnits: 1,
   })
 
@@ -165,7 +165,7 @@ export function PropertyManagement() {
                   <Label htmlFor="property-type">Property Type</Label>
                   <Select
                     value={newProperty.type}
-                    onValueChange={(value: any) => setNewProperty({ ...newProperty, type: value })}
+                    onValueChange={(value) => setNewProperty({ ...newProperty, type: value as "apartment" | "house" | "commercial" })}
                   >
                     <SelectTrigger>
                       <SelectValue />

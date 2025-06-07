@@ -140,7 +140,7 @@ export function TenantManagement() {
   const [searchQuery, setSearchQuery] = useState("")
   const [filterProperty, setFilterProperty] = useState<string>("all")
   const [filterStatus, setFilterStatus] = useState<string>("all")
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+
 
   const [newTenant, setNewTenant] = useState({
     name: "",
@@ -151,7 +151,7 @@ export function TenantManagement() {
     rentAmount: 0,
     joinDate: new Date().toISOString().split("T")[0],
     leaseEnd: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split("T")[0],
-    status: "active" as const,
+    status: "active" as "active" | "inactive" | "pending",
   })
 
   const handleAddTenant = () => {
@@ -380,7 +380,7 @@ export function TenantManagement() {
           <Label htmlFor="tenant-status">Status</Label>
           <Select
             value={tenant ? selectedTenant?.status || "" : newTenant.status}
-            onValueChange={(value: any) => {
+            onValueChange={(value: "active" | "inactive" | "pending") => {
               if (tenant && selectedTenant) {
                 setSelectedTenant({ ...selectedTenant, status: value })
               } else {

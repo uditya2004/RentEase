@@ -162,7 +162,7 @@ export function InvoiceGenerator() {
   const [isViewInvoiceOpen, setIsViewInvoiceOpen] = useState(false)
   const [isMarkAsPaidOpen, setIsMarkAsPaidOpen] = useState(false)
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
-  const [selectedTenantId, setSelectedTenantId] = useState<string>("")
+
   const [paidAmount, setPaidAmount] = useState<number>(0)
   const [paidDate, setPaidDate] = useState<string>(new Date().toISOString().split("T")[0])
   const [sendEmail, setSendEmail] = useState<boolean>(true)
