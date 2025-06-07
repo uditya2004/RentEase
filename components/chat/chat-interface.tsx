@@ -139,7 +139,7 @@ export function ChatInterface() {
         {selectedUser ? (
           <div className="h-full flex flex-col">
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto space-y-4 p-4">
+            <div className="flex-1 overflow-y-auto space-y-4 p-4 pb-24 sm:pb-20">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -174,30 +174,8 @@ export function ChatInterface() {
 
       {/* Input Area - Fixed at bottom */}
       {selectedUser && (
-        <div className="border-t bg-background p-4 sm:p-4 space-y-4 sm:space-y-3">
-          {/* Message Type Buttons */}
-          {user.role === "tenant" && (
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
-              <Button
-                variant={messageType === "message" ? "default" : "outline"}
-                size="default"
-                onClick={() => setMessageType("message")}
-                className="flex-1 sm:flex-initial h-12 sm:h-10 text-base sm:text-sm font-medium"
-              >
-                Message
-              </Button>
-              <Button
-                variant={messageType === "discrepancy" ? "default" : "outline"}
-                size="default"
-                onClick={() => setMessageType("discrepancy")}
-                className="flex-1 sm:flex-initial h-12 sm:h-10 text-base sm:text-sm font-medium"
-              >
-                <AlertTriangle className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-                <span className="hidden sm:inline">Report Issue</span>
-                <span className="sm:hidden">Report</span>
-              </Button>
-            </div>
-          )}
+        <div className="fixed bottom-0 left-0 right-0 border-t bg-background p-4 sm:p-4 space-y-4 sm:space-y-3 z-10">
+
 
           {/* Message Input */}
           <div className="flex gap-3 sm:gap-2">
