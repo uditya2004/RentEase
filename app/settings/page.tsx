@@ -1,6 +1,6 @@
 "use client"
 
-import { Shield, Bell, Eye, ChevronRight } from "lucide-react"
+import { User, Lock, Bell, Shield, ChevronRight } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 
 export default function SettingsPage() {
@@ -26,7 +26,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center">
-                <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <User className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="text-left">
                 <p className="font-medium">Account</p>
@@ -44,7 +44,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-red-50 dark:bg-red-950 flex items-center justify-center">
-                <Shield className="h-5 w-5 text-red-600 dark:text-red-400" />
+                <Lock className="h-5 w-5 text-red-600 dark:text-red-400" />
               </div>
               <div className="text-left">
                 <p className="font-medium">Security</p>
@@ -80,7 +80,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-purple-50 dark:bg-purple-950 flex items-center justify-center">
-                <Eye className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                <Shield className="h-5 w-5 text-purple-600 dark:text-purple-400" />
               </div>
               <div className="text-left">
                 <p className="font-medium">Privacy</p>

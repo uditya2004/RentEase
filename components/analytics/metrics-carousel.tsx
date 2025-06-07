@@ -49,7 +49,7 @@ export function MetricsCarousel() {
   const [isAnimating, setIsAnimating] = useState(false)
   const carouselRef = useRef<HTMLDivElement>(null)
 
-  const cardWidth = 100 / 3.5 // Show 3.5 cards
+  // Responsive card display handled by CSS classes
 
   const nextSlide = () => {
     if (!isAnimating) {
@@ -96,20 +96,20 @@ export function MetricsCarousel() {
   const renderMetrics = () => {
     const items = [...metrics, ...metrics, ...metrics]
     return items.map((metric, index) => (
-      <div key={index} className="flex-shrink-0" style={{ width: `${cardWidth}%` }}>
+      <div key={index} className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4">
         <Card className="h-full mx-2">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <metric.icon className="h-8 w-8 text-primary" />
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <metric.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
               <span
-                className={`text-sm font-semibold ${metric.change.startsWith("+") ? "text-green-500" : "text-red-500"}`}
+                className={`text-xs sm:text-sm font-semibold ${metric.change.startsWith("+") ? "text-green-500" : "text-red-500"}`}
               >
                 {metric.change}
               </span>
             </div>
-            <h3 className="text-lg font-bold mb-2">{metric.title}</h3>
-            <p className="text-2xl font-extrabold mb-4">{metric.value}</p>
-            <p className="text-sm text-muted-foreground">{metric.description}</p>
+            <h3 className="text-sm sm:text-lg font-bold mb-2">{metric.title}</h3>
+            <p className="text-lg sm:text-2xl font-extrabold mb-3 sm:mb-4">{metric.value}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">{metric.description}</p>
           </CardContent>
         </Card>
       </div>
@@ -118,8 +118,8 @@ export function MetricsCarousel() {
 
   return (
     <div className="w-full relative">
-      <div className="flex justify-between items-center">
-        <Button variant="outline" size="icon" onClick={prevSlide} className="z-10">
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="icon" onClick={prevSlide} className="z-10 flex-shrink-0">
           &lt;
         </Button>
         <div className="flex-grow overflow-hidden">
@@ -127,14 +127,13 @@ export function MetricsCarousel() {
             ref={carouselRef}
             className="flex transition-transform duration-300 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * cardWidth}%)`,
-              width: `${metrics.length * 3 * cardWidth}%`,
+              transform: `translateX(-${currentIndex * (100 / (typeof window !== 'undefined' && window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3))}%)`,
             }}
           >
             {renderMetrics()}
           </div>
         </div>
-        <Button variant="outline" size="icon" onClick={nextSlide} className="z-10">
+        <Button variant="outline" size="icon" onClick={nextSlide} className="z-10 flex-shrink-0">
           &gt;
         </Button>
       </div>

@@ -23,16 +23,20 @@ export function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivEleme
           <Button
             id="date"
             variant={"outline"}
-            className={cn("w-[300px] justify-start text-left font-normal", !date && "text-muted-foreground")}
+            className={cn("w-full sm:w-[300px] justify-start text-left font-normal", !date && "text-muted-foreground")}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                  <span className="hidden sm:inline">{format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}</span>
+                  <span className="sm:hidden">{format(date.from, "MMM dd")} - {format(date.to, "MMM dd")}</span>
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                <>
+                  <span className="hidden sm:inline">{format(date.from, "LLL dd, y")}</span>
+                  <span className="sm:hidden">{format(date.from, "MMM dd")}</span>
+                </>
               )
             ) : (
               <span>Pick a date</span>
@@ -46,7 +50,7 @@ export function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivEleme
             defaultMonth={date?.from}
             selected={date}
             onSelect={setDate}
-            numberOfMonths={2}
+            numberOfMonths={typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : 2}
           />
         </PopoverContent>
       </Popover>

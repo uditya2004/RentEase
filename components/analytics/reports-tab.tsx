@@ -55,9 +55,9 @@ export function ReportsTab() {
         <CardHeader>
           <CardTitle className="text-xl font-semibold">Generate Report</CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center space-x-4">
+        <CardContent className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
           <Select value={selectedReport} onValueChange={setSelectedReport}>
-            <SelectTrigger className="w-[240px]">
+            <SelectTrigger className="w-full sm:w-[240px]">
               <SelectValue placeholder="Select report type" />
             </SelectTrigger>
             <SelectContent>
@@ -68,7 +68,7 @@ export function ReportsTab() {
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={handleGenerateReport}>Generate Report</Button>
+          <Button onClick={handleGenerateReport} className="w-full sm:w-auto">Generate Report</Button>
         </CardContent>
       </Card>
       <Card>
@@ -84,7 +84,7 @@ export function ReportsTab() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dummyReportData[selectedReport]?.map((row) => (
+              {(dummyReportData as Record<string, Array<{id: number, metric: string, value: string}>>)[selectedReport]?.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell>{row.metric}</TableCell>
                   <TableCell>{row.value}</TableCell>
@@ -92,12 +92,12 @@ export function ReportsTab() {
               ))}
             </TableBody>
           </Table>
-          <div className="flex justify-end space-x-2 mt-4">
-            <Button variant="outline" onClick={handleDownloadReport}>
+          <div className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-2 mt-4">
+            <Button variant="outline" onClick={handleDownloadReport} className="w-full sm:w-auto">
               <Download className="mr-2 h-4 w-4" />
               Download
             </Button>
-            <Button variant="outline" onClick={handlePrintReport}>
+            <Button variant="outline" onClick={handlePrintReport} className="w-full sm:w-auto">
               <Printer className="mr-2 h-4 w-4" />
               Print
             </Button>

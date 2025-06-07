@@ -37,10 +37,10 @@ export function AnalyticsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-semibold">Detailed Analytics</h3>
+      <div className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center sm:space-y-0">
+        <h3 className="text-xl sm:text-2xl font-semibold">Detailed Analytics</h3>
         <Select value={timeFrame} onValueChange={setTimeFrame}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="Select time frame" />
           </SelectTrigger>
           <SelectContent>
@@ -51,31 +51,31 @@ export function AnalyticsTab() {
           </SelectContent>
         </Select>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
+        <Card className="lg:col-span-4">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold">Customer Segmentation</CardTitle>
+            <CardTitle className="text-lg sm:text-xl font-semibold">Customer Segmentation</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={customerSegmentationData}>
-                <XAxis dataKey="segment" />
-                <YAxis />
+                <XAxis dataKey="segment" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Bar dataKey="count" fill={theme === "dark" ? "#adfa1d" : "#0ea5e9"} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
-        <Card className="col-span-3">
+        <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold">Customer Retention Rate</CardTitle>
+            <CardTitle className="text-lg sm:text-xl font-semibold">Customer Retention Rate</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={retentionRateData}>
-                <XAxis dataKey="month" />
-                <YAxis />
+                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Line type="monotone" dataKey="rate" stroke={theme === "dark" ? "#adfa1d" : "#0ea5e9"} />
               </LineChart>
@@ -83,17 +83,17 @@ export function AnalyticsTab() {
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
+        <Card className="lg:col-span-4">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold">Channel Performance</CardTitle>
+            <CardTitle className="text-lg sm:text-xl font-semibold">Channel Performance</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={channelPerformanceData}>
-                <XAxis dataKey="channel" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
+              <BarChart data={channelPerformanceData} margin={{ left: 10, right: 10 }}>
+                <XAxis dataKey="channel" tick={{ fontSize: 10 }} />
+                <YAxis yAxisId="left" tick={{ fontSize: 10 }} />
+                <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
                 <Tooltip />
                 <Bar yAxisId="left" dataKey="acquisitions" fill={theme === "dark" ? "#adfa1d" : "#0ea5e9"} />
                 <Bar yAxisId="right" dataKey="revenue" fill={theme === "dark" ? "#1e40af" : "#3b82f6"} />
@@ -101,26 +101,26 @@ export function AnalyticsTab() {
             </ResponsiveContainer>
           </CardContent>
         </Card>
-        <Card className="col-span-3">
+        <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold">Key Metrics</CardTitle>
+            <CardTitle className="text-lg sm:text-xl font-semibold">Key Metrics</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Customer Lifetime Value</p>
-              <p className="text-2xl font-bold">$1,250</p>
+              <p className="text-xl sm:text-2xl font-bold">$1,250</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Net Promoter Score</p>
-              <p className="text-2xl font-bold">72</p>
+              <p className="text-xl sm:text-2xl font-bold">72</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Customer Acquisition Cost</p>
-              <p className="text-2xl font-bold">$75</p>
+              <p className="text-xl sm:text-2xl font-bold">$75</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Average Order Value</p>
-              <p className="text-2xl font-bold">$120</p>
+              <p className="text-xl sm:text-2xl font-bold">$120</p>
             </div>
           </CardContent>
         </Card>
