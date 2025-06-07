@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -13,13 +13,13 @@ import {
   MessageSquare,
   BarChart3,
   Settings,
-  Menu,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
+import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { useAuth } from "@/contexts/auth-context"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import { useMobileSidebar } from "@/components/mobile-sidebar-context"
 
 const landlordNavItems = [
   {
@@ -137,7 +137,7 @@ function SidebarContent({ onItemClick }: { onItemClick?: () => void }) {
 }
 
 export function Sidebar() {
-  const [open, setOpen] = useState(false)
+  const { isOpen, close } = useMobileSidebar()
   const isMobile = useMediaQuery("(max-width: 768px)")
   const { user } = useAuth()
 
@@ -145,17 +145,14 @@ export function Sidebar() {
 
   if (isMobile) {
     return (
-      <>
-        <Button variant="ghost" className="fixed left-4 top-4 z-50 md:hidden" size="sm" onClick={() => setOpen(true)}>
-          <Menu className="h-5 w-5" />
-          <span className="sr-only">Toggle Menu</span>
-        </Button>
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetContent side="left" className="p-0 w-64">
-            <SidebarContent onItemClick={() => setOpen(false)} />
-          </SheetContent>
-        </Sheet>
-      </>
+      <Sheet open={isOpen} onOpenChange={(open) => !open && close()}>
+        <SheetContent side="left" className="p-0 w-64">
+          <VisuallyHidden>
+            <SheetTitle>Navigation Menu</SheetTitle>
+          </VisuallyHidden>
+          <SidebarContent onItemClick={close} />
+        </SheetContent>
+      </Sheet>
     )
   }
 
@@ -165,3 +162,5 @@ export function Sidebar() {
     </div>
   )
 }
+
+
