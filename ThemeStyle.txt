@@ -1,0 +1,53 @@
+# RentEase Theme and Style Guide
+
+## Typography
+- Base font is Inter imported via `next/font` and applied in `RootLayout`.
+- Use font feature settings `rlig` and `calt` enabled globally.
+
+## Color Palette
+- Colors are defined using CSS custom properties in `app/globals.css`. Light mode values:
+  - `--background`: `0 0% 100%`
+  - `--foreground`: `222 47% 11%`
+  - `--muted`: `210 40% 98%`
+  - `--muted-foreground`: `215 16% 47%`
+  - `--popover` / `--card`: `0 0% 100%`
+  - `--border` and `--input`: `214 32% 91%`
+  - `--primary`: `222 47% 11%`
+  - `--secondary` & `--accent`: `210 40% 96%`
+  - `--destructive`: `0 84% 60%`
+  - `--success`: `142 76% 36%`
+  - `--info`: `214 100% 50%`
+  - `--warning`: `38 92% 50%`
+  - `--radius`: `0.5rem`
+- Dark mode overrides these variables (see lines 48‑88 of `app/globals.css`).
+- Additional chart and sidebar color variables are defined in `styles/globals.css` for specialized components.
+
+## Tailwind Configuration
+- Dark mode is class based (`"class"`).
+- The Tailwind container centers content with `padding: 2rem` and a `2xl` screen width of `1400px`.
+- Color utilities map to the CSS variables above for consistent theming.
+- Border radii derive from `--radius` with `lg`, `md`, and `sm` sizes.
+- Custom accordion animations (`accordion-down`/`accordion-up`) are defined for UI transitions.
+
+## Layout
+- Global body styles apply `bg-background` and `text-foreground`.
+- Main layout (`AppLayout`) uses a sidebar + top navigation structure. Sidebar width is `w-64` on desktop and becomes a sliding sheet on screens `<768px`.
+- Main content resides within a `container` with responsive padding (`p-4 md:p-6`) and a max width of `7xl`.
+
+## Icons
+- `components.json` specifies `lucide` as the icon library. Icons such as `Building2`, `Users`, etc. are used across the app.
+
+## Component Guidelines
+- UI components in `components/ui` use Tailwind and Radix primitives. Button variants include `default`, `destructive`, `outline`, `secondary`, `ghost`, and `link` with sizes `default`, `sm`, `lg`, and `icon`.
+- Form elements (`Input`, `Select`, `Checkbox`, etc.) inherit the color variables and border radius.
+- Dark mode styles are automatically applied via the theme provider and `ThemeToggle` component.
+
+## Responsive Design
+- Utility classes (`sm:`, `md:`, `lg:`) are used extensively to adjust layout and typography between mobile and desktop.
+- Examples include the top navigation, which hides breadcrumb links on mobile, and chat interface elements that scale text and spacing per breakpoint.
+
+## Miscellaneous
+- Scrollbars can be hidden using the `.scrollbar-hide` utility defined in `styles/scrollbar-hide.css`.
+- Images in `public/` provide placeholders for branding or avatars.
+
+Follow these guidelines when developing new pages or components to maintain a consistent appearance across both light and dark themes, desktop and mobile layouts.
