@@ -1,53 +1,81 @@
 # RentEase Theme and Style Guide
 
+This document outlines all visual standards found in the codebase. Use it as a reference when building new pages or components so the application remains visually consistent.
+
 ## Typography
-- Base font is Inter imported via `next/font` and applied in `RootLayout`.
-- Use font feature settings `rlig` and `calt` enabled globally.
+- The global typeface is **Inter** loaded via `next/font/google` in `app/layout.tsx`.
+- `<body>` receives `inter.className` and enables `font-feature-settings: "rlig" 1, "calt" 1` through `app/globals.css`.
+- Tailwind utilities control sizing: `text-sm` (14px) for labels, `text-base` (16px) for body copy, `text-lg`–`text-3xl` for headings.
 
-## Color Palette
-- Colors are defined using CSS custom properties in `app/globals.css`. Light mode values:
-  - `--background`: `0 0% 100%`
-  - `--foreground`: `222 47% 11%`
-  - `--muted`: `210 40% 98%`
-  - `--muted-foreground`: `215 16% 47%`
-  - `--popover` / `--card`: `0 0% 100%`
-  - `--border` and `--input`: `214 32% 91%`
-  - `--primary`: `222 47% 11%`
-  - `--secondary` & `--accent`: `210 40% 96%`
-  - `--destructive`: `0 84% 60%`
-  - `--success`: `142 76% 36%`
-  - `--info`: `214 100% 50%`
-  - `--warning`: `38 92% 50%`
-  - `--radius`: `0.5rem`
-- Dark mode overrides these variables (see lines 48‑88 of `app/globals.css`).
-- Additional chart and sidebar color variables are defined in `styles/globals.css` for specialized components.
+## Color System
+- HSL color tokens are declared as CSS variables in `app/globals.css`.
+- **Light theme values**:
+  - `--background: 0 0% 100%`
+  - `--foreground: 222 47% 11%`
+  - `--muted: 210 40% 98%`
+  - `--muted-foreground: 215 16% 47%`
+  - `--popover` & `--card: 0 0% 100%`
+  - `--border` & `--input: 214 32% 91%`
+  - `--primary: 222 47% 11%`
+  - `--secondary`/`--accent: 210 40% 96%`
+  - `--destructive: 0 84% 60%`
+  - `--success: 142 76% 36%`
+  - `--info: 214 100% 50%`
+  - `--warning: 38 92% 50%`
+  - `--radius: 0.5rem`
+- **Dark theme overrides** within `.dark`:
+  - `--background: 224 71% 4%`
+  - `--foreground: 213 31% 91%`
+  - `--muted: 223 47% 11%`
+  - `--muted-foreground: 215 16% 65%`
+  - `--popover` & `--card: 224 71% 4%`
+  - `--border` & `--input: 216 34% 17%`
+  - `--primary: 210 40% 98%`
+  - `--secondary: 222 47% 11%`
+  - `--accent: 216 34% 17%`
+  - `--destructive: 0 63% 31%`
+  - `--ring: 216 34% 17%`
+- `styles/globals.css` adds chart colors (`--chart-1`‒`--chart-5`) and sidebar colors such as `--sidebar-background`.
 
-## Tailwind Configuration
-- Dark mode is class based (`"class"`).
-- The Tailwind container centers content with `padding: 2rem` and a `2xl` screen width of `1400px`.
-- Color utilities map to the CSS variables above for consistent theming.
-- Border radii derive from `--radius` with `lg`, `md`, and `sm` sizes.
-- Custom accordion animations (`accordion-down`/`accordion-up`) are defined for UI transitions.
+## Tailwind Setup
+- Configured with `darkMode: "class"` in `tailwind.config.js`.
+- Container settings: center content, `padding: 2rem`, `2xl` breakpoint at `1400px` width.
+- Color utilities read from the CSS variables (`background`, `primary`, etc.).
+- Border radius utilities (`rounded-md`, `rounded-lg`) derive from `--radius`.
+- Keyframes `accordion-down` and `accordion-up` provide 0.2s expand/collapse animations via the `tailwindcss-animate` plugin.
 
-## Layout
+## Layout Patterns
 - Global body styles apply `bg-background` and `text-foreground`.
-- Main layout (`AppLayout`) uses a sidebar + top navigation structure. Sidebar width is `w-64` on desktop and becomes a sliding sheet on screens `<768px`.
-- Main content resides within a `container` with responsive padding (`p-4 md:p-6`) and a max width of `7xl`.
+- `AppLayout` composes the main structure:
+  - Sidebar width `w-64` on desktop; below `768px` it collapses into a slide‑in sheet.
+  - Top navigation includes breadcrumbs and search. Search is hidden on screens `<768px`.
+  - `<main>` wraps content in a `container mx-auto p-4 md:p-6 max-w-7xl` block.
+  - The layout fills the viewport using `h-screen` and flex containers.
+- Dialog components limit width using classes like `sm:max-w-[425px]` or `sm:max-w-[700px]`.
 
-## Icons
-- `components.json` specifies `lucide` as the icon library. Icons such as `Building2`, `Users`, etc. are used across the app.
-
-## Component Guidelines
-- UI components in `components/ui` use Tailwind and Radix primitives. Button variants include `default`, `destructive`, `outline`, `secondary`, `ghost`, and `link` with sizes `default`, `sm`, `lg`, and `icon`.
-- Form elements (`Input`, `Select`, `Checkbox`, etc.) inherit the color variables and border radius.
-- Dark mode styles are automatically applied via the theme provider and `ThemeToggle` component.
+## Components and Iconography
+- Reusable primitives reside in `components/ui` and follow the [shadcn/ui](https://github.com/shadcn/ui) approach.
+- `lucide-react` supplies all icons (see `components.json`). Typical size is `h-4 w-4` or `h-5 w-5` depending on context.
+- `ThemeProvider` from `next-themes` controls light and dark themes; the `ThemeToggle` menu switches modes.
+- Buttons implement variants `default`, `destructive`, `outline`, `secondary`, `ghost`, and `link` with sizes `default`, `sm`, `lg`, and `icon`.
+- Inputs, selects, checkboxes, and other form elements inherit color variables, border widths, and focus rings for consistent appearance.
 
 ## Responsive Design
-- Utility classes (`sm:`, `md:`, `lg:`) are used extensively to adjust layout and typography between mobile and desktop.
-- Examples include the top navigation, which hides breadcrumb links on mobile, and chat interface elements that scale text and spacing per breakpoint.
+- Tailwind breakpoints (`sm` 640px, `md` 768px, `lg` 1024px, `xl` 1280px, `2xl` 1536px) drive layout shifts.
+- Breadcrumb navigation hides on mobile, replaced with a title. Search input is hidden below `md`.
+- Sidebar becomes a sheet below `md` via `MobileSidebarProvider`.
+- Utility classes adjust spacing and font sizes at each breakpoint to ensure readability.
 
-## Miscellaneous
-- Scrollbars can be hidden using the `.scrollbar-hide` utility defined in `styles/scrollbar-hide.css`.
-- Images in `public/` provide placeholders for branding or avatars.
+## Utilities and Assets
+- `.scrollbar-hide` from `styles/scrollbar-hide.css` removes scrollbars for custom scroll areas.
+- Placeholder icons and avatars live under `public/`.
+- `styles/globals.css` provides an alternative palette for charts and sidebar components.
 
-Follow these guidelines when developing new pages or components to maintain a consistent appearance across both light and dark themes, desktop and mobile layouts.
+## Usage Guidelines
+- Prefer Tailwind classes and existing UI components over inline styles.
+- Always reference CSS variables for colors so both themes stay synchronized.
+- Place new content inside the main container to preserve width and spacing.
+- Import icons from `lucide-react` and size them with Tailwind (`h-4 w-4` by default).
+- Ensure components remain keyboard accessible and respect focus states.
+
+Adhering to these rules keeps the RentEase interface consistent across light and dark modes and responsive on both desktop and mobile.
