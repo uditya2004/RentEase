@@ -56,8 +56,8 @@ export default function SettingsPage() {
         <p className="text-muted-foreground">Manage your account settings and preferences</p>
       </div>
 
-      {/* Settings Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:max-w-2xl">
+      {/* Settings Grid - 2x2 on desktop, responsive on smaller screens */}
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 max-w-4xl">
         {settingsItems.map((item) => (
           <Card key={item.id} className="group hover:shadow-md transition-all duration-200 cursor-pointer">
             <CardContent className="p-0">
@@ -87,7 +87,7 @@ export default function SettingsPage() {
       </div>
 
       {/* User Info Card */}
-      <Card className="lg:max-w-2xl">
+      <Card className="max-w-4xl">
         <CardContent className="p-6">
           <div className="flex items-center gap-4">
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
