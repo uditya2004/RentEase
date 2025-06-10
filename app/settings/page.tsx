@@ -85,27 +85,6 @@ export default function SettingsPage() {
           </Card>
         ))}
       </div>
-
-      {/* User Info Card */}
-      <Card className="max-w-4xl">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <User className="h-6 w-6 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold">Current User</h3>
-              <p className="text-sm text-muted-foreground">{user.name}</p>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
-            </div>
-            <div className="text-right">
-              <span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-950 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 capitalize">
-                {user.role}
-              </span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }
