@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Search, Download, Filter, CheckCircle, Clock, AlertCircle, Eye } from "lucide-react"
+import Link from "next/link"
 
 interface PaymentRecord {
   id: string
@@ -114,7 +115,6 @@ export function PaymentHistory() {
   const [searchQuery, setSearchQuery] = useState("")
   const [filterYear, setFilterYear] = useState<string>("all")
   const [filterStatus, setFilterStatus] = useState<string>("all")
-
 
   const filteredPayments = payments.filter((payment) => {
     const matchesSearch =
@@ -362,16 +362,17 @@ export function PaymentHistory() {
                         <span className="hidden sm:inline">Download Receipt</span>
                         <span className="sm:hidden">Download</span>
                       </Button>
-                      <Button
-                        variant="outline"
-                        size="default"
-                        onClick={() => console.log("View details for:", payment.id)}
-                        className="flex-1 sm:flex-none h-11 sm:h-10"
-                      >
-                        <Eye className="mr-2 h-4 w-4" />
-                        <span className="hidden sm:inline">View Details</span>
-                        <span className="sm:hidden">Details</span>
-                      </Button>
+                      <Link href={`/payment-details/${payment.id}`}>
+                        <Button
+                          variant="outline"
+                          size="default"
+                          className="flex-1 sm:flex-none h-11 sm:h-10 w-full"
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          <span className="hidden sm:inline">View Details</span>
+                          <span className="sm:hidden">Details</span>
+                        </Button>
+                      </Link>
                     </div>
                   )}
                 </div>
